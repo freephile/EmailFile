@@ -32,7 +32,7 @@
 		var $to;
 		var $subject;
 
-		function EmailFile()
+		function __construct()
 		{
 			global $wgEmailFileSubject, $wgEmailFileEmailAddress;
 
@@ -241,7 +241,15 @@
 
 		function sendEmail()
 		{
-			global $wgOut, $wgUser, $wgSitename;
+			global $wgOut, $wgUser, $wgSitename, $wgLang;
+			
+			// These are set in LocalSettings.php
+			global $wgEmailFileEmailAddress, $wgEmailFileSubject;
+
+			// Ensure valid values in these variables.
+			if ($wgEmailFileEmailAddress == '') {
+				die('Can not send. Please set $wgEmailFileEmailAddress variable!');
+			}
 
 			# If the upload worked the file should exist.
 			if (file_exists($this->emailtmpfilename)) {
@@ -258,16 +266,6 @@
 					# generate a random string to be used as the boundary marker
 					//$mime_boundary="==Multipart_Boundary_x".md5(mt_rand())."x";
 					$mime_boundary = '<<<--==+X[' . md5(time()) . ']';
-
-					// Build the message headers.
-					$name = $this->emailname;
-					$email = $this->emailaddress;
-					$to = $this->to;
-
-					// The To: is specified in the mail function below
-					$headers = "From: $name <$email>\n";
-					$headers .= "MIME-Version: 1.0\n";
-					$headers .= "Content-Type: multipart/mixed; boundary=\"$mime_boundary\"\n";
 
 					// A simple message in case the mail reader cannot process MIME
 					$message = "This is a MIME encoded message.\n";
@@ -335,20 +333,28 @@
 					$message .= '--' . $mime_boundary . "\n";
 					$message .= "\n";
 
-					// Ready to send the message
-					// These are set in LocalSettings.php
-					global $wgEmailFileEmailAddress, $wgEmailFileSubject;
+					// Build the message headers.
+					$from = $this->emailname;
+					$fromAddress = $this->emailaddress;
 
-					// Ensure valid values in these variables.
-					if ($wgEmailFileEmailAddress == '') {
-						error_log('EmailFile_body.php: the $wgEmailFileEmailAddress variable is not set!');
-					}
+					// The To: is specified in the mail function below
+					$headers = "From: $from <$fromAddress>\n";
+					$headers .= "Bcc: greg@equality-tech.com, greg@rundlett.com\n";
+					$headers .= "MIME-Version: 1.0\n";
+					$headers .= "Content-Type: multipart/mixed; boundary=\"$mime_boundary\"\n";
+
 
 					// Add the language code for multi lingual routing
-					// FHS-6078
-					$this->subject = $wgEmailFileSubject . ' - ' . WIKI_LANG;
+					$this->subject = "$wgEmailFileSubject - " . $wgLang->mCode;
+					
+					// $options = ['headers'=>$headers];
+					// $to = $wgEmailFileEmailAddress;
+					// $status = UserMailer::send($to, $fromAddress, $this->subject, $message);
+
+					// if ($status) {
 
 					if (mail($wgEmailFileEmailAddress, $this->subject, $message, $headers)) {
+					// if (mail($wgEmailFileEmailAddress, $this->subject, $message)) {
 						self::showSuccess();
 					} else {
 						self::showFailure();
