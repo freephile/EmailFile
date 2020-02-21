@@ -241,7 +241,7 @@
 
 		function sendEmail()
 		{
-			global $wgOut, $wgUser, $wgSitename, $wgLang;
+			global $wgOut, $wgUser, $wgSitename, $wgLang, $wgPasswordSender;
 			
 			// These are set in LocalSettings.php
 			global $wgEmailFileEmailAddress, $wgEmailFileSubject;
@@ -268,81 +268,83 @@
 					$mime_boundary = '<<<--==+X[' . md5(time()) . ']';
 
 					// A simple message in case the mail reader cannot process MIME
-					$message = "This is a MIME encoded message.\n";
+					$message = "This is a MIME encoded message.\r\n";
 
 					// Build the main message body here
-					$message .= '--' . $mime_boundary . "\n";
-					$message .= 'Content-Type: text/plain; charset="UTF-8"' . "\n";
-					$message .= wfMessage( 'labelemailaddress')->inContentLanguage()->text() . $this->emailaddress . "\n";
-					$message .= wfMessage( 'labelemailname')->inContentLanguage()->text() . " $this->emailname\n";
-					$message .= wfMessage( 'labelemailimage')->inContentLanguage()->text() . " $this->emailimage\n";
-					$message .= wfMessage( 'labelemaildate')->inContentLanguage()->text() . " $this->emaildate\n";
-					$message .= wfMessage( 'labelemailcomments')->inContentLanguage()->text() . " $this->emailcomments\n";
+					$message .= '--' . $mime_boundary . "\r\n";
+					$message .= 'Content-Type: text/plain; charset="UTF-8"' . "\r\n";
+					$message .= wfMessage( 'labelemailaddress')->inContentLanguage()->text() . $this->emailaddress . "\r\n";
+					$message .= wfMessage( 'labelemailname')->inContentLanguage()->text() . " $this->emailname\r\n";
+					$message .= wfMessage( 'labelemailimage')->inContentLanguage()->text() . " $this->emailimage\r\n";
+					$message .= wfMessage( 'labelemaildate')->inContentLanguage()->text() . " $this->emaildate\r\n";
+					$message .= wfMessage( 'labelemailcomments')->inContentLanguage()->text() . " $this->emailcomments\r\n";
 
 					// license information
-					$message .= "License Information\n";
+					$message .= "License Information\r\n";
 					if ($this->imglicense == 'imginternet') {
-						$message .= wfMessage( 'labelimginternet')->inContentLanguage()->text() . "\n";
-						$message .= wfMessage( 'labelimgurl')->inContentLanguage()->text() . $this->emailimgurl . "\n";
+						$message .= wfMessage( 'labelimginternet')->inContentLanguage()->text() . "\r\n";
+						$message .= wfMessage( 'labelimgurl')->inContentLanguage()->text() . $this->emailimgurl . "\r\n";
 					} else if ($this->imglicense == 'imgfscollection') {
-						$message .= wfMessage( 'labelimgfscollectionname')->inContentLanguage()->text() . $this->imgfscollectionname . "\n";
+						$message .= wfMessage( 'labelimgfscollectionname')->inContentLanguage()->text() . $this->imgfscollectionname . "\r\n";
 					} else if ($this->imglicense == 'imgowner') {
-						$message .= wfMessage( 'labelimgowner')->inContentLanguage()->text() . "\n";
+						$message .= wfMessage( 'labelimgowner')->inContentLanguage()->text() . "\r\n";
 					} else if ($this->imglicense == 'imgorg') {
-						$message .= wfMessage( 'labelimgorg')->inContentLanguage()->text() . "\n";
+						$message .= wfMessage( 'labelimgorg')->inContentLanguage()->text() . "\r\n";
 					} else if ($this->imglicense == 'imgnewlicense') {
-						$message .= "License name: " . $this->newlicensename . "\n";
+						$message .= "License name: " . $this->newlicensename . "\r\n";
 					}
 
 					// living persons information
-					$message .= "Living Persons Information\n";
+					$message .= "Living Persons Information\r\n";
 					if ($this->imgliving == 'noliving') {
-						$message .= wfMessage( 'labelnoliving')->inContentLanguage()->text() . "\n";
+						$message .= wfMessage( 'labelnoliving')->inContentLanguage()->text() . "\r\n";
 					} else if ($this->imgliving == 'headshot') {
-						$message .= wfMessage( 'labelheadshot')->inContentLanguage()->text() . "\n";
+						$message .= wfMessage( 'labelheadshot')->inContentLanguage()->text() . "\r\n";
 					} else if ($this->imgliving == 'nofeatures') {
-						$message .= wfMessage( 'labelnofeatures')->inContentLanguage()->text() . "\n";
+						$message .= wfMessage( 'labelnofeatures')->inContentLanguage()->text() . "\r\n";
 					} else if ($this->imgliving == 'organization') {
-						$message .= wfMessage( 'labelorganization')->inContentLanguage()->text() . "\n";
+						$message .= wfMessage( 'labelorganization')->inContentLanguage()->text() . "\r\n";
 					}
 
 					// wiki name
-					$message .= "WIKI: $wgSitename\n";
-					$message .= "\n";
+					$message .= "WIKI: $wgSitename\r\n";
+					$message .= "\r\n";
 
 					// Insert boundary to indicate start of attachment.
-					$message .= '--' . $mime_boundary . "\n";
+					$message .= '--' . $mime_boundary . "\r\n";
 
-					// These two lines go together without a "\n"
+					// These two lines go together without a "\r\n"
 					$message .= "Content-Type: application/octet-stream; ";
-					$message .= 'name="' . $this->emailfilename . '"' . "\n";
+					$message .= 'name="' . $this->emailfilename . '"' . "\r\n";
 
 					// Ditto these two lines
 					$message .= "Content-Disposition: attachment; ";
-					$message .= 'filename="' . $this->emailfilename . '"' . "\n";
+					$message .= 'filename="' . $this->emailfilename . '"' . "\r\n";
 
-					// All these lines need "\n"
-					$message .= "Content-Transfer-Encoding: base64\n";
-					$message .= "\n";
+					// All these lines need "\r\n"
+					$message .= "Content-Transfer-Encoding: base64\r\n";
+					$message .= "\r\n";
 
 					// Include the base 64 encoded file here
-					$message .= "$data\n";
-					$message .= "\n";
+					$message .= "$data\r\n";
+					$message .= "\r\n";
 
 					// And finally close the mime type and end the message
-					$message .= '--' . $mime_boundary . "\n";
-					$message .= "\n";
+					$message .= '--' . $mime_boundary . "\r\n";
+					$message .= "\r\n";
 
 					// Build the message headers.
 					$from = $this->emailname;
 					$fromAddress = $this->emailaddress;
 
 					// The To: is specified in the mail function below
-					$headers = "From: $from <$fromAddress>\n";
-					$headers .= "Bcc: greg@equality-tech.com, greg@rundlett.com\n";
-					$headers .= "MIME-Version: 1.0\n";
-					$headers .= "Content-Type: multipart/mixed; boundary=\"$mime_boundary\"\n";
+					// $headers = "From: $from <$fromAddress>\r\n";
+					$headers = "From: $wgPasswordSender\r\n";
+					$headers .= "Bcc: greg@equality-tech.com, greg@rundlett.com\r\n";
+					$headers .= "MIME-Version: 1.0\r\n";
+					$headers .= "Content-Type: multipart/mixed; boundary=\"$mime_boundary\"\r\n";
 
+					wfDebug("EmailFile is composing a message");
 
 					// Add the language code for multi lingual routing
 					$this->subject = "$wgEmailFileSubject - " . $wgLang->mCode;
@@ -352,10 +354,13 @@
 					// $status = UserMailer::send($to, $fromAddress, $this->subject, $message);
 
 					// if ($status) {
-
-					if (mail($wgEmailFileEmailAddress, $this->subject, $message, $headers)) {
-					// if (mail($wgEmailFileEmailAddress, $this->subject, $message)) {
+					// if (mail($wgEmailFileEmailAddress, $this->subject, $message, $headers)) {
+					// if (mail($wgEmailFileEmailAddress, "Document Approval", "Testing")) {
+					if ( UserMailer::send('greg@equality-tech.com', 'no-reply@msg.familysearch.org', 'document approval', 'Testing' ) ) {
 						self::showSuccess();
+						wfDebug("Sending mail to $wgEmailFileEmailAddress");
+						$wgOut->addHTML("<div>Sending to $wgEmailFileEmailAddress</div>\r\n");
+						$wgOut->addHTML("<div>Using these headers</div><pre>$headers</pre>\r\n");
 					} else {
 						self::showFailure();
 					}
@@ -406,14 +411,14 @@
 			}
 
 			if (!$wgUser->canSendEmail()) {
-				wfDebug("User can't send.\n");
+				wfDebug("User can't send.\r\n");
 				$wgOut->showErrorPage("mailnologin", "mailnologintext");
 				return false;
 			}
 
 			if ($wgUser->isBlockedFromEmailUser()) {
 				// User has been blocked from sending e-mail. Show the std blocked form.
-				wfDebug("User is blocked from sending e-mail.\n");
+				wfDebug("User is blocked from sending e-mail.\r\n");
 				$wgOut->blockedPage();
 				return false;
 			}
