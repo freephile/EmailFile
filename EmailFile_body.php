@@ -339,7 +339,7 @@
 
 					// The To: is specified in the mail function below
 					$headers = "From: $from <$fromAddress>\n";
-					$headers .= "Bcc: greg@equality-tech.com, greg@rundlett.com\n";
+					//$headers .= "Bcc: greg@equality-tech.com, batsondl@familysearch.org\n";
 					$headers .= "MIME-Version: 1.0\n";
 					$headers .= "Content-Type: multipart/mixed; boundary=\"$mime_boundary\"\n";
 
