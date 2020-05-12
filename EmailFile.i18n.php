@@ -6,10 +6,10 @@
 // - Added: 06-19-2008 Additional labels for the new fields.
 // - Added: 10-27-2010 Additional labels for the new fields.
 
-$messages = array();
+$messages = [];
 
 $messages['en'] =
-	array(
+	[
 		'labelemailheader1' => '1. Enter image information',
 		'labelemailheader2' => '2. Select which license to publish the image with',
 		'labelemailheader3' => '3. Are there living people in the image?',
@@ -51,10 +51,10 @@ $messages['en'] =
 		'imginterneterror' => 'Please provide a website url for the image.',
 		'imgfscolnameerror' => 'Please provide a FamilySearch collection name for the image.',
 		'imglicnameerror' => 'Please provide a license name for the image.'
-	);
+	];
 
 $messages['es'] =
-	array(
+	[
 		'labelemailheader1' => '1. Ingresar la información de la imagen',
 		'labelemailheader2' => '2. Seleccione cuál licencia usará para publicar la imagen',
 		'labelemailheader3' => '3. ¿En la imagen hay personas que aún viven?',
@@ -96,10 +96,10 @@ $messages['es'] =
 		'imginterneterror' => 'Por favor, proporcione el URL del sitio web para esta imagen.',
 		'imgfscolnameerror' => 'Por favor, proporcione un nombre de la colección de FamilySearch para esta imagen.',
 		'imglicnameerror' => 'Por favor proporcione un nombre de licencia para esta imagen.'
-	);
+	];
 
 $messages['de'] =
-	array(
+	[
 		'labelemailheader1' => '1. Angaben zur Aufnahme eintragen',
 		'labelemailheader2' => '2. Auswählen, mit welcher Lizenz die Aufnahme veröffentlicht werden soll',
 		'labelemailheader3' => '3. Sind auf der Aufnahme Personen zu sehen, die noch leben?',
@@ -141,10 +141,10 @@ $messages['de'] =
 		'imginterneterror' => 'Bitte geben Sie für das Bild die URL einer Website an.',
 		'imgfscolnameerror' => 'Bitte geben Sie für das Bild den Namen der jeweiligen Sammlung von FamilySearch an.',
 		'imglicnameerror' => 'Bitte geben Sie eine Lizenzbezeichnung für das Bild an.'
-	);
+	];
 
 $messages['fr'] =
-	array(
+	[
 		'labelemailheader1' => '1. Saisissez les renseignements concernant l’image',
 		'labelemailheader2' => '2. Sélectionner la licence sous laquelle publier l’image',
 		'labelemailheader3' => '3. Figure-t-il des personnes en vie sur l’image ?',
@@ -186,10 +186,10 @@ $messages['fr'] =
 		'imginterneterror' => 'Indiquez l’URL du site Internet d’où provient l’image.',
 		'imgfscolnameerror' => 'Indiquez le nom de la collection du site de FamilySearch d’où provient l’image.',
 		'imglicnameerror' => 'Indiquez le nom de la licence sous laquelle l’image sera publiée.'
-	);
+	];
 
 $messages['it'] =
-	array(
+	[
 		'labelemailheader1' => '1. Inserisci le informazioni relative all’immagine',
 		'labelemailheader2' => '2. Seleziona la licenza con cui pubblicare l’immagine',
 		'labelemailheader3' => '3. Nell’immagine sono presenti persone viventi?',
@@ -231,10 +231,10 @@ $messages['it'] =
 		'imginterneterror' => 'Inserisci l’URL del sito web dell’immagine.',
 		'imgfscolnameerror' => 'Inserisci il nome della raccolta di FamilySeach da cui è tratta l’immagine.',
 		'imglicnameerror' => 'Inserisci il nome della licenza dell’immagine.'
-	);
+	];
 
 $messages['ja'] =
-	array(
+	[
 		'labelemailheader1' => '1．画像情報を入力する',
 		'labelemailheader2' => '2．どのライセンスの下で画像を公開するか選択する',
 		'labelemailheader3' => '3．画像に生存している個人が写っていますか。',
@@ -276,10 +276,10 @@ $messages['ja'] =
 		'imginterneterror' => '画像のウェブサイトURLを記入してください。',
 		'imgfscolnameerror' => '画像のファミリーサーチコレクション名を記入してください。',
 		'imglicnameerror' => '画像のライセンス名を記入してください。'
-	);
+	];
 
 $messages['ko'] =
-	array(
+	[
 		'labelemailheader1' => '1. 이미지 정보를 입력합니다',
 		'labelemailheader2' => '2. 이미지를 어떤 라이선스로 게재할지 선택합니다.',
 		'labelemailheader3' => '3.  이미지에 산 자가 보입니까?',
@@ -321,10 +321,10 @@ $messages['ko'] =
 		'imginterneterror' => '이미지에 대한 웹사이트 URL을 제공하시기 바랍니다.',
 		'imgfscolnameerror' => '이미지에 대한 FamilySearch 수집물 이름을 제공하시기 바랍니다.',
 		'imglicnameerror' => '이미지에 대한 라이선스 이름을 제공하시기 바랍니다.'
-	);
+	];
 
 $messages['pt'] =
-	array(
+	[
 		'labelemailheader1' => '1. Digitar as informações da imagem',
 		'labelemailheader2' => '2. Selecione a licença para publicar a imagem',
 		'labelemailheader3' => '3. Tem alguém vivo na imagem?',
@@ -366,10 +366,10 @@ $messages['pt'] =
 		'imginterneterror' => 'Forneça a url do site para a imagem.',
 		'imgfscolnameerror' => 'Por favor, forneça o nome de uma coleção do FamilySearch para a imagem. ',
 		'imglicnameerror' => 'Por favor, forneça o nome de uma licença para esta imagem.'
-	);
+	];
 
 $messages['ru'] =
-	array(
+	[
 		'labelemailheader1' => '1. Введите информацию о снимке',
 		'labelemailheader2' => '2. Выберите, какую лицензию использовать для публикации снимка',
 		'labelemailheader3' => '3. На этом снимке присутствуют живущие люди?',
@@ -411,10 +411,10 @@ $messages['ru'] =
 		'imginterneterror' => 'Пожалуйста, укажите url-адрес для данного снимка.',
 		'imgfscolnameerror' => 'Пожалуйста, укажите название коллекции FamilySearch для данного снимка.',
 		'imglicnameerror' => 'Пожалуйста, укажите название лицензии для данного снимка.'
-	);
+	];
 
 $messages['sv'] =
-	array(
+	[
 		'labelemailheader1' => '1. Ange bildinformation',
 		'labelemailheader2' => '2. Välj vilken licens att publicera bilden med',
 		'labelemailheader3' => '3. Finns det levande personerna på bilden?',
@@ -456,10 +456,10 @@ $messages['sv'] =
 		'imginterneterror' => 'Please provide a website url for the image.',
 		'imgfscolnameerror' => 'Please provide a FamilySearch collection name for the image.',
 		'imglicnameerror' => 'Please provide a license name for the image.'
-	);
+	];
 
 $messages['zh'] =
-	array(
+	[
 		'labelemailheader1' => '1.輸入影像資料',
 		'labelemailheader2' => '2.選取發布影像的授權選項',
 		'labelemailheader3' => '3.影像中有在世者嗎？',
@@ -501,4 +501,4 @@ $messages['zh'] =
 		'imginterneterror' => '請提供此影像的網站 URL。',
 		'imgfscolnameerror' => '請提供此影像的 FamilySearch 收藏資料名稱。',
 		'imglicnameerror' => '請提供此影像的授權書名稱：'
-	);
+	];
