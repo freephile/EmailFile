@@ -295,7 +295,7 @@ require 'vendor/autoload.php';
 						$mail = new PHPMailer( true );
 						$mail->setFrom( 'no-reply@familysearch.org', 'No Reply' );
 						$mail->addReplyTo( $this->emailaddress, $this->emailname );
-						$mail->addBcc( 'greg@equality-tech.com' );
+						//$mail->addBcc( 'batsondl@familysearch.org' );
 						$mail->addAddress( $wgEmailFileEmailAddress );
 						$mail->Subject = $this->subject = "$wgEmailFileSubject - " . $wgLang->mCode . " wiki";
 						$mail->Body = $message;
