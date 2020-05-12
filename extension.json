@@ -1,0 +1,26 @@
+{
+	"name": "EmailFile",
+	"version": "0.3.0",
+	"author": [
+        "[https://www.mediawiki.org/wiki/User:GregRundlett Greg Rundlett]",
+		"[https://equality-tech.com eQuality Technology]",
+		"Don B. Stringham"
+    ],
+	"url": "https://github.com/freephile/EmailFile",
+	"description": "SpecialPage to email a file (for approval).",
+	"type": "specialpage",
+	"requires": {
+		"MediaWiki": ">= 1.29.0"
+	},
+	"SpecialPages": {
+		"EmailFile": "EmailFile"
+	},
+	"ExtensionMessagesFiles": {
+		"EmailFile": "EmailFile.i18n.php"
+	},
+	"AutoloadClasses": {
+		"EmailFile": "EmailFile_body.php"
+	},
+	"load_composer_autoloader": true,
+	"manifest_version": 2
+}

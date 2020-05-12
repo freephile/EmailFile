@@ -1,10 +1,12 @@
 <?php
-# Extension:EmailFile
-# - Intellectual Reserve, Inc.(c) 2008
-# - Author: Don B. Stringham (stringhamdb@ldschurch.org)
-# - Started: 04-21-2008
-# - Form refactored: 06-20-2008
-# - Globalized: 10-27-2010
+// Import PHPMailer classes into the global namespace
+// These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// Load Composer's autoloader
+require 'vendor/autoload.php';
 
 // $messages defined in the EmailFile.i18n.php
 
@@ -71,7 +73,7 @@
 
 				if ($action == 'submit' && $wgRequest->wasPosted()) {
 					if (self::validateForm()) {
-						self::sendEmail();
+						self::sendPHPMailerEmail();
 					}
 				} else if ($action == "success") {
 					self::showSuccess();
@@ -239,7 +241,7 @@
 			$wgOut->addHTML($form);
 		}
 
-		function sendEmail()
+		function sendPHPMailerEmail()
 		{
 			global $wgOut, $wgUser, $wgSitename, $wgLang;
 			
@@ -255,25 +257,10 @@
 			if (file_exists($this->emailtmpfilename)) {
 				# Make sure it is an uploaded file and not a system file.
 				if (is_uploaded_file($this->emailtmpfilename)) {
-					# Open the file in binary mode.
-					$file = fopen($this->emailtmpfilename, 'rb');
-					# Read the file into a memory buffer.
-					$data = fread($file, filesize($this->emailtmpfilename));
-					# Close it.
-					fclose($file);
-					# Encode and split it up to acceptable length lines.
-					$data = chunk_split(base64_encode($data));
-					# generate a random string to be used as the boundary marker
-					//$mime_boundary="==Multipart_Boundary_x".md5(mt_rand())."x";
-					$mime_boundary = '<<<--==+X[' . md5(time()) . ']';
 
-					// A simple message in case the mail reader cannot process MIME
-					$message = "This is a MIME encoded message.\n";
-
-					// Build the main message body here
-					$message .= '--' . $mime_boundary . "\n";
-					$message .= 'Content-Type: text/plain; charset="UTF-8"' . "\n";
-					$message .= wfMessage( 'labelemailaddress')->inContentLanguage()->text() . $this->emailaddress . "\n";
+					$message = '';
+					$message .= 'Original filename: ' . $this->emailfilename . "\n";
+					$message .= wfMessage( 'labelemailaddress')->inContentLanguage()->text() . " $this->emailaddress\n";
 					$message .= wfMessage( 'labelemailname')->inContentLanguage()->text() . " $this->emailname\n";
 					$message .= wfMessage( 'labelemailimage')->inContentLanguage()->text() . " $this->emailimage\n";
 					$message .= wfMessage( 'labelemaildate')->inContentLanguage()->text() . " $this->emaildate\n";
@@ -307,62 +294,31 @@
 					}
 
 					// wiki name
-					$message .= "WIKI: $wgSitename\n";
+					$message .= "WIKI: $wgSitename ($wgLang->mCode)\n";
 					$message .= "\n";
 
-					// Insert boundary to indicate start of attachment.
-					$message .= '--' . $mime_boundary . "\n";
-
-					// These two lines go together without a "\n"
-					$message .= "Content-Type: application/octet-stream; ";
-					$message .= 'name="' . $this->emailfilename . '"' . "\n";
-
-					// Ditto these two lines
-					$message .= "Content-Disposition: attachment; ";
-					$message .= 'filename="' . $this->emailfilename . '"' . "\n";
-
-					// All these lines need "\n"
-					$message .= "Content-Transfer-Encoding: base64\n";
-					$message .= "\n";
-
-					// Include the base 64 encoded file here
-					$message .= "$data\n";
-					$message .= "\n";
-
-					// And finally close the mime type and end the message
-					$message .= '--' . $mime_boundary . "\n";
-					$message .= "\n";
-
-					// Build the message headers.
-					$from = $this->emailname;
-					$fromAddress = $this->emailaddress;
-
-					// The To: is specified in the mail function below
-					$headers = "From: $from <$fromAddress>\n";
-					$headers .= "Bcc: greg@equality-tech.com, greg@rundlett.com\n";
-					$headers .= "MIME-Version: 1.0\n";
-					$headers .= "Content-Type: multipart/mixed; boundary=\"$mime_boundary\"\n";
-
-
-					// Add the language code for multi lingual routing
-					$this->subject = "$wgEmailFileSubject - " . $wgLang->mCode;
-					
-					// $options = ['headers'=>$headers];
-					// $to = $wgEmailFileEmailAddress;
-					// $status = UserMailer::send($to, $fromAddress, $this->subject, $message);
-
-					// if ($status) {
-
-					if (mail($wgEmailFileEmailAddress, $this->subject, $message, $headers)) {
-					// if (mail($wgEmailFileEmailAddress, $this->subject, $message)) {
+					try {
+						// Instantiation and passing `true` enables exceptions
+						$mail = new PHPMailer(true);
+						$mail->setFrom('no-reply@familysearch.org', 'No Reply');
+						$mail->addReplyTo( $this->emailaddress, $this->emailname );
+						$mail->addBcc ( 'greg@equality-tech.com' );
+						$mail->addAddress( $wgEmailFileEmailAddress );
+						$mail->Subject = $this->subject = "$wgEmailFileSubject - " . $wgLang->mCode . " wiki";
+						$mail->Body = $message;
+						$mail->addAttachment($this->emailtmpfilename, $this->emailfilename);
+						$mail->send();
 						self::showSuccess();
-					} else {
+	
+					} catch (Exception $e) {
+						echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 						self::showFailure();
 					}
 				}
 			}
 
 		}
+
 
 		function showSuccess()
 		{
@@ -419,5 +375,15 @@
 			}
 
 			return true;
+		}
+		/**
+		 * Override the parent to set where the special page appears on Special:SpecialPages
+		 * 'other' is the default. If that's what you want, you do not need to override.
+		 * Specify 'media' to use the <code>specialpages-group-media</code> system interface message, which translates to 'Media reports and uploads' in English;
+		 * 
+		 * @return string
+		 */
+		function getGroupName() {
+			return 'pagetools';
 		}
 	}

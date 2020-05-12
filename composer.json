@@ -1,0 +1,45 @@
+{
+    "name": "equality-tech/email-file",
+    "type": "mediawiki-extension",
+    "description": "Creates SpecialPage for uploading and emailing a file",
+    "keywords": [
+        "wiki",
+        "MediaWiki",
+        "QualityBox",
+        "extension",
+        "email",
+        "file"
+    ],
+    "homepage": "https://github.com/freephile/EmailFile",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Greg Rundlett",
+            "email": "greg@equality-tech.com",
+            "role": "developer"
+        },
+        {
+            "name": "eQuality Technology",
+            "email": "info@equality-tech.com",
+            "role": "maintainer"
+        },
+        {
+            "name": "Don B Stringham",
+            "email": "stringhamdb@ldschurch.org",
+            "role": "original developer"
+        }
+    ],
+    "require": {
+        "composer/installers": "^1.0.1",
+        "phpmailer/phpmailer": "~6.1"
+    },
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "27.0.0"
+	},
+	"scripts": {
+		"test": [
+			"phpcs -p -s"
+		],
+		"fix": "phpcbf"
+	}
+}
