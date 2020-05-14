@@ -293,7 +293,9 @@ class EmailFile extends SpecialPage {
 				try {
 					// Instantiation and passing `true` enables exceptions
 					$mail = new PHPMailer( true );
-					$mail->setFrom( 'no-reply@familysearch.org', 'No Reply' );
+					// SHOULD do this, but Salesforce can't handle the truth
+					// $mail->setFrom( 'no-reply@familysearch.org', 'No Reply' );
+					$mail->setFrom( $this->emailaddress, $this->emailname );
 					$mail->addReplyTo( $this->emailaddress, $this->emailname );
 					// $mail->addBcc( 'batsondl@familysearch.org' );
 					$mail->addAddress( $wgEmailFileEmailAddress );
